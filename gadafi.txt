@@ -1,0 +1,80 @@
+class Game:
+    def __init__(self, name, genre):
+        self.name = name
+        self.genre = genre
+
+class User:
+    def __init__(self, username, age):
+        self.username = username
+        self.age = age
+        self.games_played = []
+        self.matches = []
+
+    def play_game(self, game):
+        self.games_played.append(game)
+
+    def find_match(self, user):
+        if self.age >= 18 and user.age >= 18:
+            self.matches.append(user)
+            user.matches.append(self)
+            print(f"{self.username} and {user.username} matched!")
+
+    def get_matches(self):
+        return self.matches
+
+class DatingPlatform:
+    def __init__(self):
+        self.users = []
+
+    def register_user(self, username, age):
+        new_user = User(username, age)
+        self.users.append(new_user)
+
+    def display_users(self):
+        for user in self.users:
+            print(f"Username: {user.username}, Age: {user.age}")
+
+    def find_match_for_user(self, username):
+        for user in self.users:
+            if user.username == username:
+                for other_user in self.users:
+                    if other_user != user:
+                        user.find_match(other_user)
+
+# Creating instances of the game
+game1 = Game("Super Mario", "Platformer")
+game2 = Game("Call of Duty", "FPS")
+
+# Creating instances of users
+user1 = User("John", 25)
+user2 = User("Emily", 22)
+user3 = User("David", 30)
+
+# Creating the dating platform
+platform = DatingPlatform()
+
+# Registering users on the platform
+platform.register_user(user1.username, user1.age)
+platform.register_user(user2.username, user2.age)
+platform.register_user(user3.username, user3.age)
+
+# Displaying all registered users
+platform.display_users()
+
+# User 1 plays a game
+user1.play_game(game1)
+
+# User 2 plays a game
+user2.play_game(game2)
+
+# User 1 finds a match
+user1.find_match(user2)
+
+# User 2 finds a match
+user2.find_match(user3)
+
+# Displaying matches for User 1
+matches = user1.get_matches()
+print(f"{user1.username}'s Matches:")
+for match in matches:
+    print(match.username)
